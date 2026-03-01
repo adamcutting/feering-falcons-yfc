@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { CLUB } from "@/lib/constants";
 
 export function JoinForm() {
   const [status, setStatus] = useState<
@@ -86,13 +87,22 @@ export function JoinForm() {
         >
           Child&apos;s Age Group
         </label>
-        <input
-          type="text"
+        <select
           id="join-age"
           name="age_group"
-          placeholder="e.g. Under 8"
-          className="mt-1 block w-full border border-falcon-border bg-white px-4 py-3 text-falcon-charcoal placeholder:text-falcon-charcoal/40 focus:border-falcon-red"
-        />
+          defaultValue=""
+          className="mt-1 block w-full border border-falcon-border bg-white px-4 py-3 text-falcon-charcoal focus:border-falcon-red"
+        >
+          <option value="" disabled>
+            Select an age group
+          </option>
+          {CLUB.joinAgeGroups.map((group) => (
+            <option key={group} value={group}>
+              {group}
+            </option>
+          ))}
+          <option value="Not sure">Not sure yet</option>
+        </select>
       </div>
 
       <div>
@@ -107,6 +117,8 @@ export function JoinForm() {
           id="join-email"
           name="email"
           required
+          pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
+          title="Please enter a valid email address (e.g. name@example.com)"
           className="mt-1 block w-full border border-falcon-border bg-white px-4 py-3 text-falcon-charcoal focus:border-falcon-red"
         />
       </div>

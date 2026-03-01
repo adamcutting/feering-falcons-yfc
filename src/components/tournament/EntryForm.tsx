@@ -4,18 +4,21 @@ import { useState, type FormEvent } from "react";
 import { TOURNAMENT } from "@/lib/constants";
 
 export function EntryForm() {
-  const [teams, setTeams] = useState<Record<string, number>>(
-    Object.fromEntries(TOURNAMENT.ageGroups.map((ag) => [ag, 0]))
+  const [teams, setTeams] = useState<Record<string, string>>(
+    Object.fromEntries(TOURNAMENT.ageGroups.map((ag) => [ag, ""]))
   );
   const [status, setStatus] = useState<
     "idle" | "submitting" | "success" | "error"
   >("idle");
 
-  const totalTeams = Object.values(teams).reduce((sum, n) => sum + n, 0);
+  const totalTeams = Object.values(teams).reduce(
+    (sum, n) => sum + (parseInt(n) || 0),
+    0
+  );
   const totalFee = totalTeams * TOURNAMENT.entryFee;
 
-  function updateTeams(ageGroup: string, value: number) {
-    setTeams((prev) => ({ ...prev, [ageGroup]: Math.max(0, value) }));
+  function updateTeams(ageGroup: string, value: string) {
+    setTeams((prev) => ({ ...prev, [ageGroup]: value }));
   }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -27,7 +30,7 @@ export function EntryForm() {
     const data = new FormData(form);
 
     const entries = TOURNAMENT.ageGroups
-      .filter((ag) => teams[ag] > 0)
+      .filter((ag) => (parseInt(teams[ag]) || 0) > 0)
       .map((ag) => `${ag}: ${teams[ag]} team(s)`)
       .join("\n");
     data.append("age_group_entries", entries);
@@ -189,6 +192,8 @@ export function EntryForm() {
             id="contact_email"
             name="contact_email"
             required
+            pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
+            title="Please enter a valid email address (e.g. name@example.com)"
             className="mt-1 block w-full border border-falcon-border bg-white px-4 py-3 text-falcon-charcoal focus:border-falcon-red"
           />
         </div>
@@ -222,9 +227,7 @@ export function EntryForm() {
                   min={0}
                   max={10}
                   value={teams[ag]}
-                  onChange={(e) =>
-                    updateTeams(ag, parseInt(e.target.value) || 0)
-                  }
+                  onChange={(e) => updateTeams(ag, e.target.value)}
                   className="w-20 border border-falcon-border bg-white px-3 py-2 text-center text-falcon-charcoal focus:border-falcon-red"
                 />
               </div>

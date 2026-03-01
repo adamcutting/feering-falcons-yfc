@@ -86,6 +86,8 @@ export function ContactForm() {
           id="contact-email"
           name="email"
           required
+          pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
+          title="Please enter a valid email address (e.g. name@example.com)"
           className="mt-1 block w-full border border-falcon-border bg-white px-4 py-3 text-falcon-charcoal focus:border-falcon-red"
         />
       </div>
