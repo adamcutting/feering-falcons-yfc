@@ -18,7 +18,7 @@ export default function TournamentPage() {
           <p className="font-heading text-sm tracking-widest text-white/40">
             FEERING FALCONS PRESENT
           </p>
-          <h1 className="mt-3 font-heading text-[clamp(4rem,14vw,11rem)] leading-[0.78] tracking-tight text-white">
+          <h1 className="mt-3 font-heading text-[clamp(3rem,14vw,11rem)] leading-[0.78] tracking-tight text-white">
             5-A-SIDE
             <br />
             TOURNAMENT
